@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Plot Generator</title>
+</head>
+<body>
+    <h1>Dungeons & Dragons Plot Generator</h1>
+    <form id="plotForm">
+        <label for="theme">Theme:</label>
+        <input type="text" id="theme" name="theme"><br><br>
+
+        <label for="storyIdea">Story Idea:</label>
+        <input type="text" id="storyIdea" name="storyIdea"><br><br>
+
+        <label for="numPlayers">Number of Players:</label>
+        <input type="number" id="numPlayers" name="numPlayers"><br><br>
+
+        <label for="characterLevels">Character Levels:</label>
+        <input type="number" id="characterLevels" name="characterLevels"><br><br>
+
+        <label for="setting">Setting:</label>
+        <input type="text" id="setting" name="setting"><br><br>
+
+        <button type="button" onclick="generatePlot()">Generate Plot</button>
+    </form>
+
+    <div id="plotResult"></div>
+
+    <script>
+        function generatePlot() {
+            const form = document.getElementById('plotForm');
+            const data = {
+                theme: form.theme.value,
+                storyIdea: form.storyIdea.value,
+                numPlayers: form.numPlayers.value,
+                characterLevels: form.characterLevels.value,
+                setting: form.setting.value
+            };
+
+            fetch('/generate-plot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('plotResult').textContent = data.plot;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
